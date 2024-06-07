@@ -17,6 +17,11 @@ document.getElementById('city-form').addEventListener('submit', function(event) 
     }
 });
 
+document.getElementById('clear-history').addEventListener('click', function() {
+    localStorage.removeItem('searchHistory');
+    document.getElementById('search-history').innerHTML = '';
+});
+
 function fetchWeather(city) {
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`)
         .then(response => response.json())
@@ -42,8 +47,9 @@ function displayCurrentWeather(data) {
     document.getElementById('current-weather').innerHTML = weatherHTML;
 }
 
+
 function displayForecast(data) {
-    let forecastHTML = '<h3>5-Day Forecast</h3>';
+    let forecastHTML = '<div id="forecast-heading" class="show"><h3>5-Day Forecast</h3></div>'; // Add the heading initially
     for (let i = 0; i < data.list.length; i += 8) {
         const forecast = data.list[i];
         forecastHTML += `
@@ -58,6 +64,7 @@ function displayForecast(data) {
     }
     document.getElementById('forecast').innerHTML = forecastHTML;
 }
+
 
 function addToSearchHistory(city) {
     const cityBtn = document.createElement('button');

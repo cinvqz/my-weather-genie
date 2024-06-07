@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,20 +9,22 @@
 </head>
 <body>
     <div class="container">
-        <h1>Weather Dashboard</h1>
-        <form id="city-form">
-            <input type="text" id="city-input" placeholder="Enter city name">
-            <button type="submit">Search</button>
-        </form>
-        <div id="error-message" class="hidden"></div>
-        <div class="content">
-            <div id="current-weather"></div>
-            <div id="forecast"></div>
-        </div>
         <div class="sidebar">
             <h2>Recent Searched Cities</h2>
             <div id="search-history"></div>
             <button id="clear-history" class="clear-btn">Clear</button>
+        </div>
+        <div class="content">
+            <h1>Weather Dashboard</h1>
+            <form id="city-form">
+                <input type="text" id="city-input" placeholder="Enter city name">
+                <button type="submit">Search</button>
+            </form>
+            <div id="error-message" class="hidden"></div>
+            <div id="current-weather"></div>
+            <div id="forecast">
+                <div id="weather-cards"></div> <!-- Added a new div for weather cards -->
+            </div>
         </div>
     </div>
     <script src="script.js"></script>

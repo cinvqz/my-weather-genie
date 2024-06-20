@@ -12,7 +12,6 @@ document.getElementById('city-form').addEventListener('submit', function(event) 
     } else {
         errorMessage.classList.add('hidden');
         fetchWeather(city);
-        addToSearchHistory(city);
         saveSearchHistory(city);
     }
 });
@@ -32,12 +31,21 @@ function fetchWeather(city) {
         .catch(error => console.error('Error fetching weather data:', error));
 }
 
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${dayOfWeek}, ${month}/${day}`;
+}
+
 function displayCurrentWeather(data) {
     const currentWeather = data.list[0];
+    const formattedDate = formatDate(currentWeather.dt_txt);
     const weatherHTML = `
         <div class="weather-card">
             <h2>${data.city.name}</h2>
-            <p>Date: ${currentWeather.dt_txt}</p>
+            <p>Date: ${formattedDate}</p>
             <img class="weather-icon" src="https://openweathermap.org/img/w/${currentWeather.weather[0].icon}.png" alt="${currentWeather.weather[0].description}">
             <p>Temperature: ${currentWeather.main.temp}°C</p>
             <p>Humidity: ${currentWeather.main.humidity}%</p>
@@ -47,14 +55,14 @@ function displayCurrentWeather(data) {
     document.getElementById('current-weather').innerHTML = weatherHTML;
 }
 
-
 function displayForecast(data) {
-    let forecastHTML = '<div id="forecast-heading" class="show"><h3>5-Day Forecast</h3></div>'; // Add the heading initially
+    let forecastHTML = '<h3 id="forecast-heading" class="show">5-Day Forecast</h3>'; 
     for (let i = 0; i < data.list.length; i += 8) {
         const forecast = data.list[i];
+        const formattedDate = formatDate(forecast.dt_txt);
         forecastHTML += `
             <div class="weather-card">
-                <p>Date: ${forecast.dt_txt}</p>
+                <p>Date: ${formattedDate}</p>
                 <img class="weather-icon" src="https://openweathermap.org/img/w/${forecast.weather[0].icon}.png" alt="${forecast.weather[0].description}">
                 <p>Temperature: ${forecast.main.temp}°C</p>
                 <p>Humidity: ${forecast.main.humidity}%</p>
@@ -64,7 +72,6 @@ function displayForecast(data) {
     }
     document.getElementById('forecast').innerHTML = forecastHTML;
 }
-
 
 function addToSearchHistory(city) {
     const cityBtn = document.createElement('button');
@@ -81,6 +88,7 @@ function saveSearchHistory(city) {
     if (!searchHistory.includes(city)) {
         searchHistory.push(city);
         localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+        addToSearchHistory(city);
     }
 }
 
@@ -89,5 +97,5 @@ function loadSearchHistory() {
     searchHistory.forEach(city => addToSearchHistory(city));
 }
 
-// Load search history on page load
+
 document.addEventListener('DOMContentLoaded', loadSearchHistory);

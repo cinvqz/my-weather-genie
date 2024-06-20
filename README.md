@@ -13,7 +13,7 @@ https://github.com/cinvqz/my-weather-genie
 To access the project content:
    ```python
     1. Use this link to the project repo
-    https://github.com/cinvqz/task-manager
+    https://cinvqz.github.io/my-weather-genie/
    ```
     2. Use comand git clone to clone the repo
 
